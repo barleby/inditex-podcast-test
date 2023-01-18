@@ -6,14 +6,12 @@ const Podcast = (props) => {
     const state = useContext(AppContext);
     useEffect( () => {
         state.handleLoader(false);
-        console.log('quito punto')
-    }, [])
+    }, []);
 return (
-    <div>
-        <p>Navigating to Podcast URL</p>
-        <p>Podcast número {props.match.params.id}</p>
-    </div>
-
+        <div>
+            <p>Navigating to Podcast URL</p>
+            <p>Podcast número {props.match.params.id}</p>
+        </div>
     );
 }
 
