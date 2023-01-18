@@ -12,13 +12,9 @@ class AppContextComponent extends React.Component {
             handleFilter: (e) => {
 
                 const query = e.target.value.trim().toLowerCase();
-                return this.setState((prev) => {
-                    return {filterQuery: query}
-                })
+                return this.setState(() => ({filterQuery: query}))
             },
-            handleLoader: (mustShow) => this.setState(() => {
-                return {isNavigating: mustShow}
-            })
+            handleLoader: (mustShow) => this.setState(() =>({isNavigating: mustShow}))
         }
     }
     render() {

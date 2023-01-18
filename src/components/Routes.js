@@ -1,40 +1,18 @@
-import React, { useContext, useEffect } from 'react';
-import { BrowserRouter, Switch, Route, NavLink, withRouter } from 'react-router-dom';
-import AppContext from '../context/contextProvider';
+import React from 'react';
+import { BrowserRouter, Switch, Route, withRouter } from 'react-router-dom';
 import { Home } from './Home';
 import { Podcast } from './Podcast';
+import { Nav } from './Nav';
+import { Header } from './Header';
 
-const Header = () => {
-
-    const state = useContext(AppContext);
-
-    return (
-        <h3>
-            <header>
-                <NavLink to="/" activeClassName={'homeLinkActive'} className={'homeLink'}>Podcaster</NavLink>
-                {state.isNavigating && <div>Cargando <span id="loaderDot"></span></div>}
-            </header>
-        </h3>
-  );
-}
-const Nav = ({...props}) => {
-    const state = useContext(AppContext);
-
-    useEffect(() => props.history.listen((location, action) => {
-        state.handleLoader(true);
-      }));
-    return (
-        <div>
-           {props.children}
-        </div>
-    )
-};
+// inject object History as prop
 const ConHistoria = withRouter(Nav);
 
 const Routes = () => {
 
     return (
         <BrowserRouter>
+
           <ConHistoria>
             <Header />
             <Switch>

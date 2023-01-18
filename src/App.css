@@ -53,6 +53,7 @@ header {
 }
 .card p.author {
   margin-bottom: 0;
+  color: #828383;
 }
 
 .card > div {

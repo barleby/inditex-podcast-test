@@ -15,7 +15,7 @@ const PodcastCard = ({...props}) => {
 
                 />
                 <p className="title">{podcast['im:name'].label}</p>
-                <p className="author">{podcast['im:artist'].label}</p>
+                <p className="author">Author: {podcast['im:artist'].label}</p>
             </div>
         </li>
     )
