@@ -8,64 +8,64 @@ import {withRouter} from 'react-router-dom';
 const Navega = withRouter(PodcastCard);
 
 const Home = () => {
+    const [podCastList, setPodcastList] = useState([]);
 
-    const
-        needUpdateValue = checkDate(),
-        storedPodcastList = JSON.parse(localStorage.getItem('podcastList')),
-        iTunesUrl = encodeURIComponent('https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json'),
-        state = useContext(AppContext);
-
-        const defaultState = () => {
-                return needUpdateValue ? [] : storedPodcastList
-        };
-
-    const [podCastList, setPodcastList] = useState(defaultState());
+        const iTunesUrl = encodeURIComponent('https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json')
+        const store = useContext(AppContext);
 
     const updateFetchedData = (data) => {
-
         const
             dataObject = JSON.parse(data.contents),
             list = dataObject.feed.entry;
 
-        setPodcastList(list);
-        localStorage.setItem('podcastList', JSON.stringify(list));
+        if (list.length > 0){
+            setPodcastList(list);
+            localStorage.setItem('podcastList', JSON.stringify(list));
+        }
     };
 
     useEffect( () => {
-        state.handleLoader(false);
-    }, []);
+        store.handleLoader(false);
 
-    useEffect(() => {
-        console.log("need to update? ", needUpdateValue);
+       const storedPodcastList = JSON.parse(localStorage.getItem('podcastList')) ?? []
 
-        if(needUpdateValue) {
+        const test = checkDate()
+        console.log(test)
+
+        if(checkDate()) {
 
             fetch(`https://api.allorigins.win/get?url=${iTunesUrl}`)
-                    .then(response => {
-                      if (response.ok) return response.json();
-                      throw new Error('KO. Error de red')
-                    })
-                    .then(data => {
-                        updateFetchedData(data);
-                    });
+                .then(response => {
+                    if (response.ok) return response.json();
+                    throw new Error('KO. Error de red')
+                })
+                .then(data => {
+                    console.log('data:',data)
+                    updateFetchedData(data);
+                });
             console.log("FETCHING DATA")
+        } else {
+            updateFetchedData(storedPodcastList)
         }
-    });
+    }, []);
 
     return (
         <div id="home">
+            hola
             <div id="buscador">
-                <input onChange={(e) => state.handleFilter(e)} type="text" placeholder="filtrar podcast"/>
+                <input onChange={(e) => store.handleFilter(e)} type="text" placeholder="filtrar podcast"/>
             </div>
+
+            <button onClick={()=> console.log(podCastList)}>TEST</button>
 
             <ul id="listado">
                 {
-                    podCastList.filter((podcastInFilter) => {
+                    podCastList?.filter((podcastInFilter) => {
                         const
                             title = podcastInFilter['im:name'].label.trim().toLowerCase(),
                             author = podcastInFilter['im:artist'].label.trim().toLowerCase();
 
-                        return title.indexOf(state.filterQuery) > -1 || author.indexOf(state.filterQuery) > -1
+                        return title.indexOf(store.filterQuery) > -1 || author.indexOf(store.filterQuery) > -1
                     }).map( (podcast) => {
                         const id = podcast.id.attributes['im:id'];
                         return (
