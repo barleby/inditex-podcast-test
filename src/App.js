@@ -9,6 +9,7 @@ class App extends React.Component {
     return (
       <AppContextComponent>
         <div className="App">
+            hola
           <Routes />
         </div>
       </AppContextComponent>
